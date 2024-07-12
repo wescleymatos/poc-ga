@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ga-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    ports:
+      - 8000:80
+    networks:
+      - ga-network
+
+  db:
+    image: mysql:8.4.1
+    container_name: ga-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ga
+      MYSQL_USER: ga
+      MYSQL_PASSWORD: ga
+    ports:
+      - 3306:3306
+    volumes:
+      - ga-dbdata:/var/lib/mysql
+    networks:
+      - ga-network
+
+networks:
+  ga-network:
+
+volumes:
+  ga-dbdata:

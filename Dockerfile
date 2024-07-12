@@ -1,0 +1,35 @@
+FROM php:8.2-apache
+
+# Instalar dependências necessárias
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql
+
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copiar os arquivos do projeto
+COPY . /var/www
+
+# Copiar arquivo de configuração do Apache
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Configurar o Apache
+RUN chown -R www-data:www-data /var/www \
+    && a2enmod rewrite
+
+# Configurar o diretório de trabalho
+WORKDIR /var/www
+
+# Executar o Composer para instalar dependências
+RUN composer install
+
+# Expor a porta 80
+EXPOSE 80
