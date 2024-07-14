@@ -21,6 +21,7 @@ class Evento extends Entidade
     public readonly string $nomeEmpresa;
     public readonly string $razaoSocialEmpresa;
     public readonly Cnpj $cnpjEmpresa;
+    public readonly StatusEvento $status;
     //
 
     public function __construct()
