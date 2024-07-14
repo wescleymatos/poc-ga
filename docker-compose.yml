@@ -9,9 +9,19 @@ services:
     volumes:
       - ./:/var/www
     ports:
-      - 8000:80
+      - 8080:80
     networks:
       - ga-network
+    depends_on:
+      - db
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 200M
+        reservations:
+          cpus: '0.5'
+          memory: 100M
 
   db:
     image: mysql:8.4.1

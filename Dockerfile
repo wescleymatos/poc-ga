@@ -29,7 +29,7 @@ RUN chown -R www-data:www-data /var/www \
 WORKDIR /var/www
 
 # Executar o Composer para instalar dependências
-RUN composer install
+RUN composer install --no-scripts --no-autoloader
 
 # Expor a porta 80
 EXPOSE 80
