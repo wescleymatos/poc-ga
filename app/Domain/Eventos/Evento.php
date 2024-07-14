@@ -3,14 +3,25 @@
 namespace App\Domain\Eventos;
 
 use Ramsey\Uuid\Uuid;
+use App\Domain\Commons\Entidade;
 
-class Evento
+class Evento extends Entidade
 {
-    public readonly int $id;
-    public readonly string $identificador;
+    //public readonly int $id;
+    //public readonly string $identificador;
     public readonly string $nome;
     public readonly string $descricao;
     public readonly string $dataEvento;
+
+    // TODO: Adicionar propriedades
+    public readonly string $quantidadeVagas;
+    public readonly string $observacao;
+    public readonly string $dataInicio;
+    public readonly string $dataFim;
+    public readonly string $nomeEmpresa;
+    public readonly string $razaoSocialEmpresa;
+    public readonly Cnpj $cnpjEmpresa;
+    //
 
     public function __construct()
     { }
