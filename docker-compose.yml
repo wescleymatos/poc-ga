@@ -39,8 +39,23 @@ services:
     networks:
       - ga-network
 
+  seq:
+    container_name: ga-seq
+    image: datalust/seq:latest
+    networks:
+      - ga-network
+    ports:
+      - 5341:5341
+      - 8090:80
+    environment:
+      ACCEPT_EULA: Y
+    volumes:
+      - seq-data:/data
+
 networks:
   ga-network:
 
 volumes:
   ga-dbdata:
+  seq-data:
+

@@ -1,7 +1,7 @@
 # POC GA
 
 
-- Após subir o container pela primeira vez rudar o comando
+- Após subir o container pela primeira vez rodar o comando dentro do container
 ```sh
 composer install
 ```
