@@ -8,4 +8,5 @@ enum LogLevel: string
     case DEBUG = 'Debug';
     case WARNING = 'Warning';
     case ERROR = 'Error';
+    case TRACE = 'Trace';
 }
