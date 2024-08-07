@@ -52,6 +52,12 @@ services:
     volumes:
       - seq-data:/data
 
+  zipkin:
+    container_name: ga-zipkin
+    image: openzipkin/zipkin:latest
+    ports:
+      - "9411:9411"
+
 networks:
   ga-network:
 
