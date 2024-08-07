@@ -16,20 +16,22 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar os arquivos do projeto
-COPY . /var/www
+COPY . /var/www/html
 
 # Copiar arquivo de configuração do Apache
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+#COPY 000-default.conf /etc/apache2/sites-available/000-default.conf #Comentado para deixar usar o default da imagem
 
 # Configurar o Apache
-RUN chown -R www-data:www-data /var/www \
+RUN chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite
 
 # Configurar o diretório de trabalho
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # Executar o Composer para instalar dependências
-RUN composer install --no-scripts --no-autoloader
+#RUN composer install --no-scripts --no-autoloader
+
+RUN composer install
 
 # Expor a porta 80
 EXPOSE 80
