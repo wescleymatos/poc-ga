@@ -1,39 +1,47 @@
-FROM php:8.2-apache
+# Etapa de construção
+FROM php:8.2-cli as build
 
-# Instalar dependências necessárias
+# Instala dependências necessárias
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
+    libzip-dev \
     unzip \
     git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
+    && docker-php-ext-install zip
 
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Configura o diretório de trabalho
+WORKDIR /app
 
-# Copiar os arquivos do projeto
-COPY . /var/www/html
+# Copia os arquivos do projeto
+COPY . .
 
-# Copiar arquivo de configuração do Apache
-#COPY 000-default.conf /etc/apache2/sites-available/000-default.conf #Comentado para deixar usar o default da imagem
+# Instala dependências do Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --no-dev --no-scripts --no-progress --prefer-dist
 
-# Configurar o Apache
-RUN chown -R www-data:www-data /var/www/html \
-    && a2enmod rewrite
+# Etapa de produção
+FROM php:8.2-apache
 
-# Configurar o diretório de trabalho
+# Instala dependências necessárias
+RUN apt-get update && apt-get install -y libzip-dev \
+    && docker-php-ext-install zip
+
+# Configura o diretório de trabalho
 WORKDIR /var/www/html
 
-# Executar o Composer para instalar dependências
-#RUN composer install --no-scripts --no-autoloader
+# Copia arquivos do build
+COPY --from=build /app /var/www/html
 
-RUN composer install
+# Copia o arquivo de configuração do Apache
+COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-# Expor a porta 80
+# Habilita o mod_rewrite do Apache
+RUN a2enmod rewrite
+
+# Configura permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Expõe a porta 80
 EXPOSE 80
 
 # Define o comando de entrada
