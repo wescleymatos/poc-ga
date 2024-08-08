@@ -19,7 +19,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html
 
 # Copiar arquivo de configuração do Apache
-#COPY 000-default.conf /etc/apache2/sites-available/000-default.conf #Comentado para deixar usar o default da imagem
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Configurar o Apache
 RUN chown -R www-data:www-data /var/www/html \
