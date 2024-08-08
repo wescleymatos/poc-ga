@@ -32,7 +32,7 @@ WORKDIR /var/www/html
 COPY --from=build /app /var/www/html
 
 # Copia o arquivo de configuração do Apache
-COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+#COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Habilita o mod_rewrite do Apache
 RUN a2enmod rewrite
