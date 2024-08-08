@@ -3,10 +3,15 @@ FROM --platform=linux/arm64 php:8.2-cli as build
 
 # Instala dependências necessárias
 RUN apt-get update && apt-get install -y \
-    libzip-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
     unzip \
     git \
-    && docker-php-ext-install zip
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql
 
 # Configura o diretório de trabalho
 WORKDIR /app
