@@ -38,7 +38,7 @@ jobs:
           password: ${{secrets.DOCKERHUB_PWD}}
 
       - name: Construção da imagem Docker
-        uses: docker/build-push-action@vv6.6.1
+        uses: docker/build-push-action@v6.6.1
         with:
           context: ./
           file: ./Dockerfile
