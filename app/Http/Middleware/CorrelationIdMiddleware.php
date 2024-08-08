@@ -21,19 +21,26 @@ class CorrelationIdMiddleware
     {
         $correlationId = $request->header('X-Correlation-Id', Uuid::uuid4()->toString());
 
-        $this->logger->info('[CorrelationIdMiddleware] - {correlationId} - Iniciar Middleware', [
-            'correlationId' => $correlationId
-        ]);
+        try {
+            $this->logger->info('[CorrelationIdMiddleware] - {correlationId} - Iniciar Middleware', [
+                'correlationId' => $correlationId
+            ]);
 
-        $request->attributes->set('correlationId', $correlationId);
+            $request->attributes->set('correlationId', $correlationId);
 
-        $response = $next($request);
-        $response->headers->set('X-Correlation-Id', $correlationId);
+            $response = $next($request);
+            $response->headers->set('X-Correlation-Id', $correlationId);
 
-        $this->logger->info('[CorrelationIdMiddleware] - {correlationId} - Finalizar Middleware', [
-            'correlationId' => $correlationId
-        ]);
+            $this->logger->info('[CorrelationIdMiddleware] - {correlationId} - Finalizar Middleware', [
+                'correlationId' => $correlationId
+            ]);
 
-        return $response;
+            return $response;
+        } catch (\Exception $e) {
+            $this->logger->error('[CorrelationIdMiddleware] - {correlationId} - Iniciar Middleware', [
+                'correlationId' => $correlationId
+            ], $e);
+        }
+
     }
 }
