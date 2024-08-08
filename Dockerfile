@@ -35,3 +35,6 @@ RUN composer install
 
 # Expor a porta 80
 EXPOSE 80
+
+# Define o comando de entrada
+CMD ["apache2-foreground"]
