@@ -1,5 +1,5 @@
 # Etapa de construção
-FROM --platform=linux/arm64 php:8.2-cli as build
+FROM --platform=linux/arm64/v8 php:8.2-cli as build
 
 # Instala dependências necessárias
 RUN apt-get update && apt-get install -y \
@@ -24,7 +24,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     && composer install --no-dev --no-scripts --no-progress --prefer-dist
 
 # Etapa de produção
-FROM --platform=linux/arm64 php:8.2-apache
+FROM --platform=linux/arm64/v8 php:8.2-apache
 
 # Instala dependências necessárias
 RUN apt-get update && apt-get install -y libzip-dev \
