@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Application\Eventos\CriarEvento\CriarEventoHandler;
 use App\Application\Eventos\CriarEvento\CriarEventoRequest;
 use App\Application\Shared\Services\Logs\LoggerInterface;
@@ -22,22 +23,32 @@ class EventoController extends Controller
     {
         $correlationId = $request->attributes->get('correlationId');
 
-        $this->logger->info('[EventoController] - {correlationId} - Iniciar criação de evento', [
-            'correlationId' => $correlationId
-        ]);
+        try {
 
-        $request = new CriarEventoRequest(
-            $correlationId,
-            $request->input('nome'),
-            $request->input('descricao'),
-            $request->input('dataEvento'));
+            $this->logger->info('[EventoController] - {correlationId} - Iniciar criação de evento', [
+                'correlationId' => $correlationId
+            ]);
 
-        $response = $this->handler->executar($request);
+            $request = new CriarEventoRequest(
+                $correlationId,
+                $request->input('nome'),
+                $request->input('descricao'),
+                $request->input('dataEvento')
+            );
 
-        $this->logger->info('[EventoController] - {correlationId} - Finalizar criação de evento', [
-            'correlationId' => $correlationId
-        ]);
+            $response = $this->handler->executar($request);
 
-        return response()->json($response);
+            $this->logger->info('[EventoController] - {correlationId} - Finalizar criação de evento', [
+                'correlationId' => $correlationId
+            ]);
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            $this->logger->error('[CorrelationIdMiddleware] - {correlationId} - Iniciar Middleware', [
+                'correlationId' => $correlationId
+            ], $e);
+
+            return response()->json([], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
