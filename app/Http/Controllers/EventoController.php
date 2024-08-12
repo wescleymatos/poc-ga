@@ -24,7 +24,6 @@ class EventoController extends Controller
         $correlationId = $request->attributes->get('correlationId');
 
         try {
-
             $this->logger->info('[EventoController] - {correlationId} - Iniciar criação de evento', [
                 'correlationId' => $correlationId
             ]);
@@ -44,9 +43,7 @@ class EventoController extends Controller
 
             return response()->json($response);
         } catch (\Exception $ex) {
-            $this->logger->error('[CorrelationIdMiddleware] - {correlationId} - Iniciar Middleware', [
-                'correlationId' => $correlationId
-            ], $ex->getMessage());
+            $this->logger->error('[EventoController] - {correlationId}', ['correlationId' => $correlationId], $ex->getMessage());
 
             return response()->json([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
