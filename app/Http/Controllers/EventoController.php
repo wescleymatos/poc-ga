@@ -43,10 +43,10 @@ class EventoController extends Controller
             ]);
 
             return response()->json($response);
-        } catch (\Exception $e) {
+        } catch (\Exception $ex) {
             $this->logger->error('[CorrelationIdMiddleware] - {correlationId} - Iniciar Middleware', [
                 'correlationId' => $correlationId
-            ], $e);
+            ], $ex->getMessage());
 
             return response()->json([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
