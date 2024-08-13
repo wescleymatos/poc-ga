@@ -8,17 +8,6 @@ use App\Infra\Data\Models\EventoModel;
 
 class EventoRepository implements EventoRepositoryInterface
 {
-    // private EventoModel $eventoModel;
-
-    // public function __construct()
-    // {
-    //     $this->eventoModel = new EventoModel();
-    // }
-    // public function buscar(): array
-    // {
-    //     return Evento::all()->toArray();
-    // }
-
     public function buscarPorId(int $id): ?Evento
     {
         return EventoModel::find($id);

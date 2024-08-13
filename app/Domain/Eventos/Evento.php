@@ -7,8 +7,6 @@ use App\Domain\Commons\Entidade;
 
 class Evento extends Entidade
 {
-    //public readonly int $id;
-    //public readonly string $identificador;
     public readonly string $nome;
     public readonly string $descricao;
     public readonly string $dataEvento;
@@ -25,12 +23,13 @@ class Evento extends Entidade
     //
 
     public function __construct()
-    { }
+    {
+        parent::__construct();
+    }
 
     public static function new(string $nome, string $descricao, string $dataEvento): self
     {
         $entidade = new self();
-        $entidade->identificador = Uuid::uuid4()->toString();
         $entidade->nome = $nome;
         $entidade->descricao = $descricao;
         $entidade->dataEvento = $dataEvento;
